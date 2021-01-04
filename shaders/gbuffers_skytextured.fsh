@@ -1,3 +1,7 @@
+/* shaders/gbuffers_skytextured.fsh
+ * 3 Jan 2020
+ * by TheAarnold
+ **/
 #version 120
 
 uniform sampler2D texture;

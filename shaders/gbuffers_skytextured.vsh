@@ -1,3 +1,7 @@
+/* shaders/gbuffers_skytextured.vsh
+ * 3 Jan 2020
+ * by TheAarnold
+ **/
 #version 120
 
 varying vec2 texcoord;

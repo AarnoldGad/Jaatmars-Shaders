@@ -1,5 +1,5 @@
 /* shaders/gbuffers_textured.vsh
- * 30/12/2020
+ * 30 Dec 2020
  * by TheAarnold
  **/
 #version 120
@@ -11,7 +11,7 @@ varying vec2 lmcoord;
 varying vec4 glcolor;
 varying vec3 surfNormal;
 varying vec3 sunNormal;
-varying float NdotL;
+varying float surfaceExposition;
 
 uniform vec3 sunPosition;
 uniform mat4 gbufferModelView;
@@ -25,5 +25,5 @@ void main()
 
 	surfNormal = normalize(gl_NormalMatrix * gl_Normal);
 	sunNormal = normalize((gbufferModelView * gl_Vertex).xyz - sunPosition);
-	NdotL = dot(surfNormal, -sunNormal);
+	surfaceExposition = -dot(surfNormal, sunNormal);
 }

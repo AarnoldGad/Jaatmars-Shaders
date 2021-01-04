@@ -1,5 +1,5 @@
 /* shaders/composite.vsh
- * 29/12/2020
+ * 29 Dec 2020
  * by TheAarnold
  **/
 #version 120
