@@ -1,0 +1,28 @@
+# lang/en_US.lang
+# 29/12/2020
+# by TheAarnold
+
+profile.Default=Default
+
+screen.Shadows=Shadows
+screen.Sky=Sky
+screen.Debug=Debug
+
+option.CREDIT=Jaatmars vIC
+value.CREDIT.0=by TheAarnold
+
+option.SHADOWS=Shadows
+
+option.shadowMapResolution=Shadow map resolution
+option.shadowDistance=Shadow distance
+
+option.SHADOW_SHARPNESS=Shadow quality
+value.SHADOW_SHARPNESS.0=Realistic
+value.SHADOW_SHARPNESS.1=Sharpened Realistic
+value.SHADOW_SHARPNESS.2=Sharp
+
+option.sunPathRotation=Sun rotation
+
+option.SUN_GLARE=Sun glare
+
+option.SUN_FLARE=Sun flare
