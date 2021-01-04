@@ -16,6 +16,8 @@ varying float surfaceExposition;
 uniform vec3 sunPosition;
 uniform mat4 gbufferModelView;
 
+uniform float shadowAngle;
+
 void main()
 {
 	gl_Position = ftransform();
@@ -24,6 +26,13 @@ void main()
 	glcolor = gl_Color;
 
 	surfNormal = normalize(gl_NormalMatrix * gl_Normal);
-	sunNormal = normalize((gbufferModelView * gl_Vertex).xyz - sunPosition);
+
+	float alpha = shadowAngle * 2 * pi;
+	float delta = -sunPathRotation * 0.017453292;
+
+	vec3 uAlpha = vec3(-sin(alpha), cos(alpha), 0);
+	vec3 uDelta = vec3(0, -sin(delta), cos(delta));
+
+	sunNormal = normalize(gbufferModelView * vec4(-cross(uAlpha, uDelta), 1.0)).xyz;
 	surfaceExposition = -dot(surfNormal, sunNormal);
 }
