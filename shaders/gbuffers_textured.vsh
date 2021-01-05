@@ -13,10 +13,8 @@ varying vec3 surfNormal;
 varying vec3 sunNormal;
 varying float surfaceExposition;
 
-uniform vec3 sunPosition;
-uniform mat4 gbufferModelView;
-
 uniform float shadowAngle;
+uniform mat4 gbufferModelView;
 
 void main()
 {

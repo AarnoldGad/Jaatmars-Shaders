@@ -1,9 +1,9 @@
-/* include/shadows.glsl
+/* include/shadows/shadows.glsl
 * 3 Jan 2020
 * by TheAarnold
 **/
 
-const float maxShadow = 0.45;
+#include "distortion.glsl"
 
 vec3 toViewSpace(in vec3 pos)
 {
@@ -25,23 +25,41 @@ vec3 toLightSpace(in vec3 pos)
 	return projDiag * lightSpace + shadowProjection[3].xyz;
 }
 
-void distort(inout vec3 pos)
-{
- float bias = 1.0 - 25.6 / shadowDistance;
- float distortFactor = length(pos.xy) * bias + 1.0 - bias;
- pos.xy /= distortFactor;
-}
-
 vec3 getShadowPosition()
 {
 	vec3 screenPos = vec3(gl_FragCoord.xy / vec2(viewWidth, viewHeight), gl_FragCoord.z);
 	vec3 shadowPos = toLightSpace(toWorldSpace(toViewSpace(screenPos)));
-	//shadowPos = distort(shadowPos);
-	shadowPos.z *= 0.2;
+	distort(shadowPos);
 	shadowPos = shadowPos * 0.5 + 0.5;
-	shadowPos.z -= 0.0002;
+
+	float shadowBias = 0.0001 * (1.0 - surfaceExposition);
+	shadowPos.z -= shadowBias;
 
 	return shadowPos;
+}
+
+float filter(in vec3 pos, in sampler2D depthMap)
+{
+	float shadowAmount;
+
+	const vec2 texelSize = vec2(1.0 / shadowMapResolution);
+	const float sampleSpacing = 1.0;
+	const int sampleBound = 2;
+
+	for (int x = -sampleBound; x <= sampleBound; x++)
+	{
+		for (int y = -sampleBound; y <= sampleBound; y++)
+		{
+			vec2 texelPos = pos.xy + vec2(float(x) * sampleSpacing, float(y) * sampleSpacing) * texelSize;
+
+			if (texelPos.x < 1.0 && texelPos.y < 1.0 &&
+				 texelPos.x > 0.0 && texelPos.y > 0.0)
+				shadowAmount += pos.z > texture2D(depthMap, texelPos).x ? 1.0 : 0.0;
+		}
+	}
+
+	const float sampleCount = float((sampleBound * 2 + 1) * (sampleBound * 2 + 1));
+	return shadowAmount / sampleCount;
 }
 
 void computeShadow(inout vec4 color, in vec3 shadowPos)
@@ -55,18 +73,17 @@ void computeShadow(inout vec4 color, in vec3 shadowPos)
 	{
 		if (isNotTooFar)
 		{
-			float litDepth = texture2D(shadowtex0, shadowPos.xy).x;
-			float shadowFactor = shadowPos.z > litDepth ? maxShadow : 0.0;
+			float shadowAmount = filter(shadowPos, shadowtex0);
 
-			color.xyz *= (1.0 - max(shadowFactor, maxShadow * (1.0 - surfaceExposition)));
+			color.xyz *= (1.0 - max(shadowAmount * SHADOW_BRIGHTNESS, SHADOW_BRIGHTNESS * (1.0 - surfaceExposition)));
 		}
 		else
 		{
-			color.xyz *= (1.0 - maxShadow * (1.0 - surfaceExposition));
+			color.xyz *= (1.0 - SHADOW_BRIGHTNESS * (1.0 - surfaceExposition));
 		}
 	}
 	else
 	{
-		color.xyz *= (1.0 - maxShadow);
+		color.xyz *= (1.0 - SHADOW_BRIGHTNESS);
 	}
 }

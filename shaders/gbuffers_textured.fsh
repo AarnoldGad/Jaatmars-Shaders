@@ -25,7 +25,7 @@ uniform mat4 shadowProjection;
 uniform float viewWidth;
 uniform float viewHeight;
 
-#include "/include/shadows.glsl"
+#include "/include/shadows/shadows.glsl"
 
 void main()
 {
