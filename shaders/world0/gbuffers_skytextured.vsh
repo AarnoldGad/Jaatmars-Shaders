@@ -4,6 +4,8 @@
  **/
 #version 120
 
+#include "/include/settings.glsl"
+
 varying vec2 texcoord;
 varying vec4 glcolor;
 

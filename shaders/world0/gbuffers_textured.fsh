@@ -15,7 +15,7 @@ varying float surfaceExposition;
 
 uniform sampler2D texture;
 uniform sampler2D lightmap;
-uniform sampler2D shadowtex0;
+uniform sampler2DShadow shadowtex0;
 
 uniform mat4 gbufferModelViewInverse;
 uniform mat4 gbufferProjectionInverse;

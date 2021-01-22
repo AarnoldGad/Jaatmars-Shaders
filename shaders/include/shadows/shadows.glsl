@@ -32,58 +32,15 @@ vec3 getShadowPosition()
 	distort(shadowPos);
 	shadowPos = shadowPos * 0.5 + 0.5;
 
-	float shadowBias = 0.0001 * (1.0 - surfaceExposition);
+	float shadowBias = 0.0002;
 	shadowPos.z -= shadowBias;
 
 	return shadowPos;
 }
 
-float filter(in vec3 pos, in sampler2D depthMap)
-{
-	float shadowAmount;
-
-	const vec2 texelSize = vec2(1.0 / shadowMapResolution);
-	const float sampleSpacing = 1.0;
-	const int sampleBound = 2;
-
-	for (int x = -sampleBound; x <= sampleBound; x++)
-	{
-		for (int y = -sampleBound; y <= sampleBound; y++)
-		{
-			vec2 texelPos = pos.xy + vec2(float(x) * sampleSpacing, float(y) * sampleSpacing) * texelSize;
-
-			if (texelPos.x < 1.0 && texelPos.y < 1.0 &&
-				 texelPos.x > 0.0 && texelPos.y > 0.0)
-				shadowAmount += pos.z > texture2D(depthMap, texelPos).x ? 1.0 : 0.0;
-		}
-	}
-
-	const float sampleCount = float((sampleBound * 2 + 1) * (sampleBound * 2 + 1));
-	return shadowAmount / sampleCount;
-}
-
 void computeShadow(inout vec4 color, in vec3 shadowPos)
 {
-	bool isNotTooFar = shadowPos.x < 1.0 && shadowPos.y < 1.0 &&
-							 shadowPos.x > 0.0 && shadowPos.y > 0.0;
-
-	bool isFaceToLight = surfaceExposition > 0.0;
-
-	if (isFaceToLight)
-	{
-		if (isNotTooFar)
-		{
-			float shadowAmount = filter(shadowPos, shadowtex0);
-
-			color.xyz *= (1.0 - max(shadowAmount * SHADOW_BRIGHTNESS, SHADOW_BRIGHTNESS * (1.0 - surfaceExposition)));
-		}
-		else
-		{
-			color.xyz *= (1.0 - SHADOW_BRIGHTNESS * (1.0 - surfaceExposition));
-		}
-	}
-	else
-	{
-		color.xyz *= (1.0 - SHADOW_BRIGHTNESS);
-	}
+	//float shadowAmount = shadowPos.z > texture2D(shadowtex0, shadowPos.xy).x ? 0.55 : 0.0;
+	float shadowAmount = clamp(shadow2D(shadowtex0, shadowPos).x, SHADOW_BRIGHTNESS, 1.0);
+	color.xyz *= shadowAmount;
 }
