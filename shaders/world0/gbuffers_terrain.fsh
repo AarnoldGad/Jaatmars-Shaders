@@ -9,18 +9,13 @@
 uniform sampler2D texture;
 uniform sampler2D lightmap;
 
-#ifdef SHADOW_HARDWARE_FILTERING
-	uniform sampler2DShadow shadowtex0;
-#else
-	uniform sampler2D shadowtex0;
-#endif
-
 varying vec2 lmcoord;
 varying vec2 texcoord;
 varying vec4 glcolor;
 
-varying vec3 surfNormal;
+varying vec3 normal;
 varying vec3 lightDir;
+varying float NdotL;
 
 uniform mat4 gbufferProjectionInverse, gbufferModelViewInverse;
 uniform mat4 shadowModelView, shadowProjection;
@@ -29,7 +24,15 @@ uniform float viewWidth;
 uniform float viewHeight;
 
 #ifdef SHADOWS
-	#include "/include/shadows/shadows.glsl"
+	#ifdef SHADOW_HARDWARE_FILTERING
+		uniform sampler2DShadow shadowtex0;
+	#else
+		uniform sampler2D shadowtex0;
+	#endif
+
+	varying vec3 shadowPos;
+
+	#include "/include/shadows/shadows.fsh"
 #endif
 
 void main()
@@ -38,7 +41,7 @@ void main()
 	color *= texture2D(lightmap, lmcoord);
 
 	#ifdef SHADOWS
-		color = computeShadow(color, -dot(surfNormal, lightDir));
+		color = computeShadow(color, shadowPos, NdotL);
 	#endif
 
 	gl_FragData[0] = color;
