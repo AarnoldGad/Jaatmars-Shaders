@@ -1,4 +1,4 @@
-/* shaders/shadow.fsh
+/* shaders/world0/shadow.fsh
  * 29 Dec 2020
  * by TheAarnold
  **/

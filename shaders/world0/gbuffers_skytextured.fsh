@@ -1,4 +1,4 @@
-/* shaders/gbuffers_skytextured.fsh
+/* shaders/world0/gbuffers_skytextured.fsh
  * 3 Jan 2020
  * by TheAarnold
  **/
@@ -11,7 +11,8 @@ uniform sampler2D texture;
 varying vec2 texcoord;
 varying vec4 glcolor;
 
-void main() {
+void main()
+{
 	vec4 color = texture2D(texture, texcoord) * glcolor;
 	gl_FragData[0] = color;
 }

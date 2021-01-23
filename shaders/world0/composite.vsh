@@ -1,4 +1,4 @@
-/* shaders/composite.vsh
+/* shaders/world0/composite.vsh
  * 29 Dec 2020
  * by TheAarnold
  **/
@@ -11,5 +11,5 @@ varying vec2 texcoord;
 void main()
 {
 	gl_Position = ftransform();
-	texcoord = (gl_TextureMatrix[0] * gl_MultiTexCoord0).xy;
+	texcoord = gl_MultiTexCoord0.xy;
 }

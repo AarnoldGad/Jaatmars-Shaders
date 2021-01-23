@@ -16,11 +16,6 @@ option.SHADOWS=Shadows
 option.shadowMapResolution=Shadow map resolution
 option.shadowDistance=Shadow distance
 
-option.SHADOW_SHARPNESS=Shadow quality
-value.SHADOW_SHARPNESS.0=Realistic
-value.SHADOW_SHARPNESS.1=Sharpened Realistic
-value.SHADOW_SHARPNESS.2=Sharp
-
 option.sunPathRotation=Sun rotation
 
 option.SUN_GLARE=Sun glare

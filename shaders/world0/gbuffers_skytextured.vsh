@@ -1,4 +1,4 @@
-/* shaders/gbuffers_skytextured.vsh
+/* shaders/world0/gbuffers_skytextured.vsh
  * 3 Jan 2020
  * by TheAarnold
  **/
