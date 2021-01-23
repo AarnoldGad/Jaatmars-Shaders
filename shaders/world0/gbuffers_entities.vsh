@@ -1,7 +1,3 @@
-/* shaders/world0/gbuffers_terrain.vsh
- * 22 Jan 2020
- * by TheAarnold
- **/
 #version 120
 
 #include "/include/settings.glsl"
@@ -16,8 +12,7 @@ varying vec3 lightDir;
 uniform float shadowAngle;
 uniform mat4 gbufferModelView;
 
-void main()
-{
+void main() {
 	gl_Position = ftransform();
 	texcoord = gl_MultiTexCoord0.xy;
 	lmcoord  = gl_MultiTexCoord1.xy;

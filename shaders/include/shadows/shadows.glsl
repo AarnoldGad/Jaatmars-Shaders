@@ -49,7 +49,7 @@ float getShadowBrightness(in vec3 shadowPos, in float exposition)
 		}
 		else
 		{
-			if (exposition < 0.2)
+			if (exposition < 0.3)
 				return SHADOW_BRIGHTNESS + (1.0 - SHADOW_BRIGHTNESS) * 5.0 * exposition;
 			else
 				return 1.0;
@@ -59,12 +59,27 @@ float getShadowBrightness(in vec3 shadowPos, in float exposition)
 		return SHADOW_BRIGHTNESS;
 }
 
+float getDepthBias(in float exposition)
+{
+	float maxBias = 0.0001;
+	return max(maxBias * (1.0 - dot(surfNormal, lightDir)), 0.00002);
+}
+
+vec3 getNormalOffset(in vec3 normal)
+{
+	vec3 offset = vec3(0.0);
+
+
+
+	return offset;
+}
+
 vec4 computeShadow(in vec4 color, in float exposition)
 {
 	vec3 shadowPos = getShadowPosition();
 
-	//float shadowBias = 0.00002;
-	//shadowPos.z -= shadowBias;
+	shadowPos.z -= getDepthBias(exposition);
+	//shadowPos.xyz += getNormalOffset(surfNormal);
 
 	color.xyz *= getShadowBrightness(shadowPos, exposition);
 
