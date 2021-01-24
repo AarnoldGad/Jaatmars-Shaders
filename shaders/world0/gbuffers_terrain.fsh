@@ -13,7 +13,7 @@ varying vec2 lmcoord;
 varying vec2 texcoord;
 varying vec4 glcolor;
 
-varying vec3 normal;
+varying vec3 surfaceNormal;
 varying vec3 lightDir;
 varying float NdotL;
 
@@ -39,6 +39,13 @@ void main()
 {
 	vec4 color = texture2D(texture, texcoord) * glcolor;
 	color *= texture2D(lightmap, lmcoord);
+/*
+	vec3 normal = surfaceNormal;
+
+	normal = mat3(gbufferModelViewInverse) * normal;
+	normal = mat3(shadowModelView) * normal;
+
+	color = vec4(normal.x, normal.y, normal.z, 1.0);*/
 
 	#ifdef SHADOWS
 		color = computeShadow(color, shadowPos, NdotL);
