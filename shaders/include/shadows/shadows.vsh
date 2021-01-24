@@ -13,14 +13,14 @@ vec3 diag3(in mat4 matrix)
 float getDepthBias(in vec3 pos, in float exposition)
 {
 	float maxBias = 0.00005;
-	float bias = maxBias * exposition;
+	float bias = maxBias * (1.0 - exposition);
 	distortBias(bias, pos);
-	return max(bias, maxBias);
+	return bias;
 }
 
 vec3 getNormalOffset(in vec3 pos, in vec3 normal, in float exposition)
 {
-	normal.z = -normal.z;
+	normal.z = -normal.z; // normal.z not in the right direction ?
 	float maxBias = 0.52 / shadowMapResolution;
 
 	float sine = sqrt(1.0 - (exposition * exposition));
@@ -40,8 +40,7 @@ vec3 computeShadowPosition(in vec3 pos, in vec3 normal, in float exposition)
 	distort(pos);
 	pos = pos * 0.5 + 0.5;
 
-	//pos.z -= getDepthBias(pos, exposition);
-	pos.z -= 0.00005;
+	pos.z -= getDepthBias(pos, exposition);
 	pos.xyz += getNormalOffset(pos, normal, exposition);
 
 	return pos;

@@ -14,6 +14,6 @@ vec3 distort(inout vec3 pos)
 float distortBias(inout float bias, in vec3 pos)
 {
 	float distortionFactor = length(pos.xy) * SHADOWMAP_BIAS + 1.0 - SHADOWMAP_BIAS;
-	bias *= 10.0 * distortionFactor;
+	bias *= 5.0 * distortionFactor * distortionFactor;
 	return bias;
 }
