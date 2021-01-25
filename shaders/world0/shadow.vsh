@@ -12,6 +12,8 @@ varying vec2 texcoord;
 void main()
 {
 	gl_Position = ftransform();
-	distort(gl_Position.xyz);
+
+	gl_Position.xyz = distort(gl_Position.xyz);
+
 	texcoord.xy = gl_MultiTexCoord0.xy;
 }

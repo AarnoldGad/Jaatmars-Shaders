@@ -39,13 +39,6 @@ void main()
 {
 	vec4 color = texture2D(texture, texcoord) * glcolor;
 	color *= texture2D(lightmap, lmcoord);
-/*
-	vec3 normal = surfaceNormal;
-
-	normal = mat3(gbufferModelViewInverse) * normal;
-	normal = mat3(shadowModelView) * normal;
-
-	color = vec4(normal.x, normal.y, normal.z, 1.0);*/
 
 	#ifdef SHADOWS
 		color = computeShadow(color, shadowPos, NdotL);
