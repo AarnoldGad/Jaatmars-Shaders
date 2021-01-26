@@ -4,6 +4,8 @@
  **/
 #version 120
 
+#define VERTEX_SHADER
+
 #include "/include/settings.glsl"
 
 varying vec2 lmcoord;
@@ -19,10 +21,12 @@ uniform mat4 shadowModelView, shadowProjection;
 
 uniform vec3 shadowLightPosition;
 
+attribute vec3 mc_Entity;
+
 #ifdef SHADOWS
 	varying vec3 shadowPos;
 
-	#include "/include/shadows/shadows.vsh"
+	#include "/include/shadows/shadows.glsl"
 #endif
 
 void main()
@@ -39,6 +43,6 @@ void main()
 	NdotL = dot(surfaceNormal, lightDir);
 
 	#ifdef SHADOWS
-		shadowPos = computeShadowPosition(position, surfaceNormal, NdotL);
+		shadowPos = computeShadowPosition(position, surfaceNormal, NdotL, 0.0);
 	#endif
 }

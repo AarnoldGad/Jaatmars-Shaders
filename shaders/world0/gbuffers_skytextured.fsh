@@ -4,6 +4,8 @@
  **/
 #version 120
 
+#define FRAGMENT_SHADER
+
 #include "/include/settings.glsl"
 
 uniform sampler2D texture;

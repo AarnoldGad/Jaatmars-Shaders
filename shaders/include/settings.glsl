@@ -32,4 +32,10 @@
 const float shadowMapBias = 1.0 - 12.8 / shadowDistance;
 
 // ID Mappings
-#define GRASS 31
+#define GRASS 10001
+#define SAPLING 10002
+#define LEAVES 10003
+#define FLOWER 10004
+#define CROP 10005
+#define FLOWER_BOTTOM 10006
+#define FLOWER_TOP 10007

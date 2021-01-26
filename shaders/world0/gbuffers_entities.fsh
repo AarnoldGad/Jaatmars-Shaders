@@ -4,6 +4,8 @@
  **/
 #version 120
 
+#define FRAGMENT_SHADER
+
 #include "/include/settings.glsl"
 
 uniform sampler2D lightmap;
@@ -33,7 +35,7 @@ uniform float viewHeight;
 
 	varying vec3 shadowPos;
 
-	#include "/include/shadows/shadows.fsh"
+	#include "/include/shadows/shadows.glsl"
 #endif
 
 void main()
@@ -43,7 +45,7 @@ void main()
 	color *= texture2D(lightmap, lmcoord);
 
 	#ifdef SHADOWS
-		color = computeShadow(color, shadowPos, NdotL);
+		color = computeShadow(color, shadowPos, NdotL, 0.0);
 	#endif
 
 	gl_FragData[0] = color;

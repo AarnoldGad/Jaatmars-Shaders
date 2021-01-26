@@ -4,6 +4,8 @@
  **/
 #version 120
 
+#define VERTEX_SHADER
+
 #include "/include/settings.glsl"
 
 varying vec2 texcoord;
